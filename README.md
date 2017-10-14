@@ -1,9 +1,8 @@
 # Carbonize
 
  [![Packagist](https://img.shields.io/packagist/l/ryanwinchester/carbonize.svg)](https://packagist.org/packages/ryanwinchester/carbonize)
- [![Packagist](https://img.shields.io/packagist/v/ryanwinchester/carbonize.svg)](https://packagist.org/packages/ryanwinchester/carbonize)
  [![Build Status](https://travis-ci.org/ryanwinchester/carbonize.svg?branch=master)](https://travis-ci.org/ryanwinchester/carbonize)
- [![codecov](https://codecov.io/gh/ryanwinchester/carbonize/branch/master/graph/badge.svg)](https://codecov.io/gh/ryanwinchester/carbonize)
+ [![Codecov](https://img.shields.io/codecov/c/github/ryanwinchester/carbonize.svg)](https://codecov.io/gh/ryanwinchester/carbonize)
  [![Maintainability](https://api.codeclimate.com/v1/badges/6d9cea21fa5324d48cca/maintainability)](https://codeclimate.com/github/ryanwinchester/carbonize/maintainability)
 
 
@@ -16,28 +15,25 @@ DateTime|Immutable objects, date strings, timestamps, or null (for `now`).
 composer require ryanwinchester/carbonize
 ```
 
-## Usage
+## What it does
 
 ```php
-$carbon = new Carbon();
-$dt = new DateTime();
-$dtImmutable = new DateTimeImmutable();
-
 carbonize() == Carbon::now("UTC");
 
+$carbon = new Carbon();
 carbonize($carbon) == $carbon->copy();
 
+$dt = new DateTime();
 carbonize($dt) == Carbon::instance($dt);
 
+$dtImmutable = new DateTimeImmutable();
 carbonize($dtImmutable) == Carbon::instance(new DateTime($dtImmutable->format(DateTime::ATOM)));
 
 carbonize(1507957785) == Carbon::createFromTimestamp(1507957785, "UTC");
 
 carbonize("1507957785") == Carbon::createFromTimestamp(1507957785, "UTC");
 
-carbonize("2017-01-01") == Carbon::parse("2017-01-01", "UTC");
-
-carbonize("1975-12-25T14:15:16-0500") == Carbon::parse("1975-12-25T14:15:16-0500", "UTC");
+carbonize("2017-01-01 12:04:01") == Carbon::parse("2017-01-01 12:04:01", "UTC");
 
 carbonize("3 months ago") == Carbon::parse("3 months ago", "UTC");
 ```
