@@ -1,0 +1,14 @@
+engines:
+  phpmd:
+    enabled: true
+#    checks:
+#      UnusedPrivateField:
+#        enabled: false
+
+ratings:
+  paths:
+    - "src/**/*.php"
+
+exclude_paths:
+  - "tests/"
+  - "vendor/"
