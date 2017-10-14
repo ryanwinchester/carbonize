@@ -9,6 +9,20 @@
 [Carbon](https://github.com/briannesbitt/Carbon) helper for creating new instances of Carbon from other Carbon objects,
 DateTime|Immutable objects, date strings, timestamps, or null (for `now`).
 
+Sometimes we have to work on projects that already exist or are underway, that are full of magic and inconsistent date formats.
+Is this going to be a timestamp? a date string? a Carbon instance? Does it even matter as long as it's a datetime of some sort? ¯\\\_(ツ)\_/¯
+
+```php
+    public function doMyThing($datetime)
+    {
+        // Whatever it was, it is _now_ a NEW carbon instance
+        $datetime = carbonize($datetime);
+
+        // do stuff with your carbon instance
+    }
+```
+
+
 ## Install
 
 It's probably best to just copy the code and modify it to suit your needs than to add a dependency (if you do have some good improvements, please share).
