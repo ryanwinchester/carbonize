@@ -1,9 +1,11 @@
 engines:
   phpmd:
     enabled: true
-#    checks:
-#      UnusedPrivateField:
-#        enabled: false
+    checks:
+      Naming/ShortVariable:
+        enabled: false
+      CleanCode/StaticAccess:
+        enabled: false
 
 ratings:
   paths:
