@@ -4,41 +4,46 @@ use Carbon\Carbon;
 
 if (! function_exists('carbonize')) {
     /**
-     * @param mixed $time
-     * @param string $tz
+     * @param mixed $datetime
+     * @param string|null $tz
      * @return Carbon
      * @throws InvalidArgumentException
      */
-    function carbonize($time = null, $tz = 'UTC')
+    function carbonize($datetime = null, $tz = null)
     {
         switch (true) {
-            case is_null($time):
-                return Carbon::now($tz);
-            case $time instanceof Carbon:
-                return $time->copy();
-            case $time instanceof DateTime:
-                return Carbon::instance($time);
-            case $time instanceof DateTimeImmutable:
-                return Carbon::instance(new DateTime($time->format(DateTime::ATOM)));
-            case is_numeric($time) && (string) (int) $time === (string) $time:
-                return Carbon::createFromTimestamp((int) $time, $tz);
-            case is_string($time) && strtotime($time) !== false:
-                return Carbon::parse($time, $tz);
+            case is_null($datetime):
+                return new Carbon(null, $tz);
+            case $datetime instanceof Carbon:
+                $dt = clone $datetime;
+                return is_null($tz) ? $dt : $dt->setTimezone($tz);
+            case $datetime instanceof DateTime:
+                $dt = Carbon::instance($datetime);
+                return is_null($tz) ? $dt : $dt->setTimezone($tz);
+            case $datetime instanceof DateTimeImmutable:
+                $dt = Carbon::instance(new DateTime($datetime->format(DateTime::ATOM)));
+                return is_null($tz) ? $dt : $dt->setTimezone($tz);
+            case is_numeric($datetime) && (string) (int) $datetime === (string) $datetime:
+                return Carbon::createFromTimestamp((int) $datetime, $tz);
+            case is_string($datetime) && strtotime($datetime) !== false:
+                return new Carbon($datetime, $tz);
             default:
-                throw new InvalidArgumentException("I don't know what to do with this.");
+                throw new InvalidArgumentException(
+                    "That is not a date time of any sort that I can deal with"
+                );
         }
     }
 }
 
 if (! function_exists('carbon')) {
     /**
-     * @param mixed $time
-     * @param string $tz
+     * @param mixed $datetime
+     * @param string|null $tz
      * @return Carbon
      * @throws InvalidArgumentException
      */
-    function carbon($time = null, $tz = 'UTC')
+    function carbon($datetime = null, $tz = null)
     {
-        return carbonize($time, $tz);
+        return carbonize($datetime, $tz);
     }
 }
