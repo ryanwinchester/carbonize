@@ -48,4 +48,11 @@ final class CarbonizeTest extends TestCase
         $this->assertTrue(carbonize("2017-01-01") == Carbon::parse("2017-01-01", "UTC"));
         $this->assertTrue(carbonize("1975-12-25T14:15:16-0500") == Carbon::parse("1975-12-25T14:15:16-0500", "UTC"));
     }
+
+    function test_carbonize_throws()
+    {
+        $this->expectException(\TypeError::class);
+
+        carbonize("the quick brown fox");
+    }
 }
