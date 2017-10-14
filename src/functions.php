@@ -7,7 +7,7 @@ if (! function_exists('carbonize')) {
      * @param mixed $time
      * @param string $tz
      * @return Carbon
-     * @throws TypeError
+     * @throws InvalidArgumentException
      */
     function carbonize($time = null, $tz = 'UTC')
     {
@@ -25,7 +25,7 @@ if (! function_exists('carbonize')) {
             case is_datetime_string($time):
                 return Carbon::parse($time, $tz);
             default:
-                throw new TypeError("I don't know what to do with this.");
+                throw new InvalidArgumentException("I don't know what to do with this.");
         }
     }
 }

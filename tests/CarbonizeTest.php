@@ -51,7 +51,7 @@ final class CarbonizeTest extends TestCase
 
     function test_carbonize_throws()
     {
-        $this->expectException(\TypeError::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         carbonize("the quick brown fox");
     }
