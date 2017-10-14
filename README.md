@@ -3,9 +3,8 @@
  [![Packagist](https://img.shields.io/packagist/l/ryanwinchester/carbonize.svg)](https://packagist.org/packages/ryanwinchester/carbonize)
  [![Packagist](https://img.shields.io/packagist/v/ryanwinchester/carbonize.svg)](https://packagist.org/packages/ryanwinchester/carbonize)
  [![Build Status](https://travis-ci.org/ryanwinchester/carbonize.svg?branch=master)](https://travis-ci.org/ryanwinchester/carbonize)
- [![Maintainability](https://api.codeclimate.com/v1/badges/6d9cea21fa5324d48cca/maintainability)](https://codeclimate.com/github/ryanwinchester/carbonize/maintainability)
- [![Test Coverage](https://api.codeclimate.com/v1/badges/6d9cea21fa5324d48cca/test_coverage)](https://codeclimate.com/github/ryanwinchester/carbonize/test_coverage)
  [![codecov](https://codecov.io/gh/ryanwinchester/carbonize/branch/master/graph/badge.svg)](https://codecov.io/gh/ryanwinchester/carbonize)
+ [![Maintainability](https://api.codeclimate.com/v1/badges/6d9cea21fa5324d48cca/maintainability)](https://codeclimate.com/github/ryanwinchester/carbonize/maintainability)
 
 
 [Carbon](https://github.com/briannesbitt/Carbon) helper for creating new instances of Carbon from other Carbon objects,
