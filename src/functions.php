@@ -29,3 +29,16 @@ if (! function_exists('carbonize')) {
         }
     }
 }
+
+if (! function_exists('carbon')) {
+    /**
+     * @param mixed $time
+     * @param string $tz
+     * @return Carbon
+     * @throws InvalidArgumentException
+     */
+    function carbon($time = null, $tz = 'UTC')
+    {
+        return carbonize($time, $tz);
+    }
+}

@@ -36,6 +36,14 @@ final class CarbonizeTest extends TestCase
         $this->assertFalse($carbon0 === $carbon);
     }
 
+    function test_carbon()
+    {
+        $this->assertEquals(
+            carbonize("2001-12-13 12:00:00", "America/Vancouver"),
+            carbon("2001-12-13 12:00:00", "America/Vancouver")
+        );
+    }
+
     function test_carbonize()
     {
         $carbon = new Carbon();
@@ -59,8 +67,8 @@ final class CarbonizeTest extends TestCase
     {
         $carbon = new Carbon(null, $timezone);
         $dtTimezone = new DateTimeZone($timezone);
-        $dt = new DateTime('now', $dtTimezone);
-        $dtImmutable = new DateTimeImmutable('now', $dtTimezone);
+        $dt = new DateTime("now", $dtTimezone);
+        $dtImmutable = new DateTimeImmutable("now", $dtTimezone);
 
         $this->assert_carbon_with_timezone(carbonize($carbon), $carbon->copy());
         $this->assert_carbon_with_timezone(carbonize($dt), Carbon::instance($dt));
