@@ -1,0 +1,34 @@
+language: php
+
+matrix:
+  fast_finish: true
+  include:
+    - php: '5.5'
+    - php: '5.6'
+    - php: '7.0'
+    - php: '7.1'
+    - php: '7.2'
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_install:
+  - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - travis_retry composer self-update
+
+install:
+  - travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest
+
+script:
+  - vendor/bin/phpunit --coverage-clover clover.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+  - vendor/bin/test-reporter --coverage-report=clover.xml
+
+addons:
+  code_climate:
+    repo_token: $CODE_CLIMATE_TOKEN

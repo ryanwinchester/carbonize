@@ -1,0 +1,26 @@
+{
+    "name": "ryanwinchester/carbonize",
+    "description": "Carbon helper for cloning and creating new Carbon instances.",
+    "type": "package",
+    "license": "MIT",
+    "authors": [{
+        "name": "Ryan Winchester",
+        "email": "code@ryanwinchester.ca"
+    }],
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "php": ">= 5.5",
+        "nesbot/carbon": "^1.21"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.4",
+        "codeclimate/php-test-reporter": "^0.4.4"
+    },
+    "autoload": {
+        "files": ["src/functions.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {"Carbonize\\Tests\\": "tests/"}
+    }
+}
