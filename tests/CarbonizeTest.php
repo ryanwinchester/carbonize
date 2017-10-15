@@ -44,6 +44,16 @@ final class CarbonizeTest extends TestCase
         );
     }
 
+    /**
+     * @dataProvider invalid_time_provider
+     * @expectedException \InvalidArgumentException
+     * @param mixed $time
+     */
+    function test_carbonize_invalid_time($time)
+    {
+        carbonize($time);
+    }
+
     function test_carbonize()
     {
         $carbon = new Carbon();
@@ -52,7 +62,7 @@ final class CarbonizeTest extends TestCase
 
         $this->assertTrue(carbonize($carbon) == $carbon->copy());
         $this->assertTrue(carbonize($dt) == Carbon::instance($dt));
-        $this->assertTrue(carbonize($dtImmutable) == Carbon::instance(new DateTime($dtImmutable->format(DateTime::ATOM))));
+        $this->assertTrue(carbonize($dtImmutable) == new Carbon($dtImmutable->format('Y-m-d H:i:s.u'), $dtImmutable->getTimezone()));
         $this->assertTrue(carbonize(1507957785) == Carbon::createFromTimestamp(1507957785, "UTC"));
         $this->assertTrue(carbonize("1507957785") == Carbon::createFromTimestamp(1507957785, "UTC"));
         $this->assertTrue(carbonize("2017-01-01") == Carbon::parse("2017-01-01", "UTC"));
@@ -63,30 +73,183 @@ final class CarbonizeTest extends TestCase
      * @dataProvider timezone_provider
      * @param string $timezone
      */
-    function test_carbonize_with_timezone($timezone)
+    function test_carbonize_carbon_with_timezone($timezone)
     {
         $carbon = new Carbon(null, $timezone);
-        $dtTimezone = new DateTimeZone($timezone);
-        $dt = new DateTime("now", $dtTimezone);
-        $dtImmutable = new DateTimeImmutable("now", $dtTimezone);
 
-        $this->assert_carbon_with_timezone(carbonize($carbon), $carbon->copy());
-        $this->assert_carbon_with_timezone(carbonize($dt), Carbon::instance($dt));
-        $this->assert_carbon_with_timezone(carbonize($dtImmutable), Carbon::instance(new DateTime($dtImmutable->format(DateTime::ATOM))));
-        $this->assert_carbon_with_timezone(carbonize(1507957785, $timezone), Carbon::createFromTimestamp(1507957785, $timezone));
-        $this->assert_carbon_with_timezone(carbonize("1507957785", $timezone), Carbon::createFromTimestamp(1507957785, $timezone));
-        $this->assert_carbon_with_timezone(carbonize("2017-01-01", $timezone), Carbon::parse("2017-01-01", $timezone));
-        $this->assert_carbon_with_timezone(carbonize("1975-12-25T14:15:16-0500", $timezone), Carbon::parse("1975-12-25T14:15:16-0500", $timezone));
+        $carbon1 = carbonize($carbon);
+        $carbon2 = $carbon->copy();
+
+        $this->assertEquals($carbon1->toIso8601String(), $carbon2->toIso8601String());
+        $this->assertEquals($carbon1->getTimezone()->getName(), $carbon2->getTimezone()->getName());
     }
 
     /**
-     * @param Carbon $carbon1
-     * @param Carbon $carbon2
+     * @dataProvider timezone_provider
+     * @param string $timezone
      */
-    function assert_carbon_with_timezone($carbon1, $carbon2)
+    function test_carbonize_datetime_with_timezone($timezone)
     {
-        $this->assertTrue($carbon1 == $carbon2);
-        $this->assertTrue($carbon1->getTimezone()->getName() == $carbon2->getTimezone()->getName());
+        $dt = new DateTime("now", new DateTimeZone($timezone));
+
+        $carbon1 = carbonize($dt);
+        $carbon2 = Carbon::instance($dt);
+
+        $this->assertEquals($carbon1->toIso8601String(), $carbon2->toIso8601String());
+        $this->assertEquals($carbon1->getTimezone()->getName(), $carbon2->getTimezone()->getName());
+    }
+
+    /**
+     * @dataProvider timezone_provider
+     * @param string $timezone
+     */
+    function test_carbonize_datetime_immutable_with_timezone($timezone)
+    {
+        $dtImmutable = new DateTimeImmutable("now", new DateTimeZone($timezone));
+
+        $carbon1 = carbonize($dtImmutable);
+        $carbon2 = new Carbon($dtImmutable->format('Y-m-d H:i:s.u'), $dtImmutable->getTimezone());
+
+        $this->assertEquals($carbon1->toIso8601String(), $carbon2->toIso8601String());
+        $this->assertEquals($carbon1->getTimezone()->getName(), $carbon2->getTimezone()->getName());
+    }
+
+    /**
+     * @dataProvider timezone_provider
+     * @param string $timezone
+     */
+    function test_carbonize_timestamp_with_timezone($timezone)
+    {
+        $carbon1 = carbonize(1507957785, $timezone);
+        $carbon2 = Carbon::createFromTimestamp(1507957785, $timezone);
+
+        $this->assertEquals($carbon1->toIso8601String(), $carbon2->toIso8601String());
+        $this->assertEquals($carbon1->getTimezone()->getName(), $carbon2->getTimezone()->getName());
+    }
+
+    /**
+     * @dataProvider timezone_provider
+     * @param string $timezone
+     */
+    function test_carbonize_timestamp_string_with_timezone($timezone)
+    {
+        $carbon1 = carbonize("1507957785", $timezone);
+        $carbon2 = Carbon::createFromTimestamp(1507957785, $timezone);
+
+        $this->assertEquals($carbon1->toIso8601String(), $carbon2->toIso8601String());
+        $this->assertEquals($carbon1->getTimezone()->getName(), $carbon2->getTimezone()->getName());
+    }
+
+    /**
+     * @dataProvider timezone_provider
+     * @param string $timezone
+     */
+    function test_carbonize_datetime_strings_with_timezone($timezone)
+    {
+        $carbon1 = carbonize("2017-01-01", $timezone);
+        $carbon2 = Carbon::parse("2017-01-01", $timezone);
+
+        $this->assertEquals($carbon1->toIso8601String(), $carbon2->toIso8601String());
+        $this->assertEquals($carbon1->getTimezone()->getName(), $carbon2->getTimezone()->getName());
+
+        $carbon1 = carbonize("1975-12-25T14:15:16-0500", $timezone);
+        $carbon2 = Carbon::parse("1975-12-25T14:15:16-0500")->setTimezone($timezone);
+
+        $this->assertEquals($carbon1->toIso8601String(), $carbon2->toIso8601String());
+        $this->assertEquals($carbon1->getTimezone()->getName(), $carbon2->getTimezone()->getName());
+    }
+
+    // Converting timezones
+
+    /**
+     * @dataProvider timezone_provider
+     * @param string $timezone
+     */
+    function test_carbonize_carbon_with_timezone_setting($timezone)
+    {
+        $carbon = new Carbon(null, $timezone);
+
+        $carbon1 = carbonize($carbon, $timezone);
+        $carbon2 = $carbon->copy()->setTimezone($timezone);
+
+        $this->assertEquals($carbon1->toIso8601String(), $carbon2->toIso8601String());
+        $this->assertEquals($carbon1->getTimezone()->getName(), $carbon2->getTimezone()->getName());
+    }
+
+    /**
+     * @dataProvider timezone_provider
+     * @param string $timezone
+     */
+    function test_carbonize_datetime_with_timezone_setting($timezone)
+    {
+        $dt = new DateTime("now", new DateTimeZone($timezone));
+
+        $carbon1 = carbonize($dt, $timezone);
+        $carbon2 = Carbon::instance($dt)->setTimezone($timezone);
+
+        $this->assertEquals($carbon1->toIso8601String(), $carbon2->toIso8601String());
+        $this->assertEquals($carbon1->getTimezone()->getName(), $carbon2->getTimezone()->getName());
+    }
+
+    /**
+     * @dataProvider timezone_provider
+     * @param string $timezone
+     */
+    function test_carbonize_datetime_immutable_with_timezone_setting($timezone)
+    {
+        $dtImmutable = new DateTimeImmutable("now", new DateTimeZone($timezone));
+
+        $carbon1 = carbonize($dtImmutable, $timezone);
+        $carbon2 = (new Carbon($dtImmutable->format('Y-m-d H:i:s.u'), $dtImmutable->getTimezone()))
+            ->setTimezone($timezone);
+
+        $this->assertEquals($carbon1->toIso8601String(), $carbon2->toIso8601String());
+        $this->assertEquals($carbon1->getTimezone()->getName(), $carbon2->getTimezone()->getName());
+    }
+
+    /**
+     * @dataProvider timezone_provider
+     * @param string $timezone
+     */
+    function test_carbonize_timestamp_with_timezone_setting($timezone)
+    {
+        $carbon1 = carbonize(1507957785, $timezone);
+        $carbon2 = Carbon::createFromTimestamp(1507957785, $timezone);
+
+        $this->assertEquals($carbon1->toIso8601String(), $carbon2->toIso8601String());
+        $this->assertEquals($carbon1->getTimezone()->getName(), $carbon2->getTimezone()->getName());
+    }
+
+    /**
+     * @dataProvider timezone_provider
+     * @param string $timezone
+     */
+    function test_carbonize_timestamp_string_with_timezone_setting($timezone)
+    {
+        $carbon1 = carbonize("1507957785", $timezone);
+        $carbon2 = Carbon::createFromTimestamp(1507957785, $timezone);
+
+        $this->assertEquals($carbon1->toIso8601String(), $carbon2->toIso8601String());
+        $this->assertEquals($carbon1->getTimezone()->getName(), $carbon2->getTimezone()->getName());
+    }
+
+    /**
+     * @dataProvider timezone_provider
+     * @param string $timezone
+     */
+    function test_carbonize_datetime_strings_with_timezone_setting($timezone)
+    {
+        $carbon1 = carbonize("2017-01-01", $timezone);
+        $carbon2 = Carbon::parse("2017-01-01", $timezone);
+
+        $this->assertEquals($carbon1->toIso8601String(), $carbon2->toIso8601String());
+        $this->assertEquals($carbon1->getTimezone()->getName(), $carbon2->getTimezone()->getName());
+
+        $carbon1 = carbonize("1975-12-25T14:15:16-0500", $timezone);
+        $carbon2 = Carbon::parse("1975-12-25T14:15:16-0500")->setTimezone($timezone);
+
+        $this->assertEquals($carbon1->toIso8601String(), $carbon2->toIso8601String());
+        $this->assertEquals($carbon1->getTimezone()->getName(), $carbon2->getTimezone()->getName());
     }
 
     /**
@@ -106,16 +269,6 @@ final class CarbonizeTest extends TestCase
         yield ["Europe/Vilnius"];
         yield ["Indian/Maldives"];
         yield ["Pacific/Galapagos"];
-    }
-
-    /**
-     * @dataProvider invalid_time_provider
-     * @expectedException \InvalidArgumentException
-     * @param mixed $time
-     */
-    function test_carbonize_invalid_time($time)
-    {
-        carbonize($time);
     }
 
     /**

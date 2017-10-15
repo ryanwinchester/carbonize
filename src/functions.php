@@ -26,7 +26,8 @@ if (! function_exists('carbonize')) {
             case is_numeric($datetime) && (string) (int) $datetime === (string) $datetime:
                 return Carbon::createFromTimestamp((int) $datetime, $tz);
             case is_string($datetime) && strtotime($datetime) !== false:
-                return new Carbon($datetime, $tz);
+                $dt = new Carbon($datetime, $tz);
+                return is_null($tz) ? $dt : $dt->setTimezone($tz);
             default:
                 throw new InvalidArgumentException(
                     "That is not a date time of any sort that I can deal with"
