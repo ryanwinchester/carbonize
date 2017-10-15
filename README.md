@@ -30,6 +30,10 @@ You can use it as either `carbonize()`, `carbon()`, or `Carbonize\Carbonize::toC
 composer require ryanwinchester/carbonize
 ```
 
+This does not install carbon as a dependency, so add it yourself.
+
+**Important Note:** Please use Carbon 1.21 (not 1.22) until timezones are fixed. (https://github.com/briannesbitt/Carbon/issues/863)
+
 ## What it does
 
 ```php
@@ -63,7 +67,6 @@ MIT
 
 ## Notes
 
-- Please use Carbon 1.21 (not 1.22) until timezones are fixed. (https://github.com/briannesbitt/Carbon/issues/863)
-- Although Carbon is decent, use [Chronos](https://github.com/cakephp/chronos) if you can. (https://github.com/cakephp/chronos)
+Although Carbon is decent, use [Chronos](https://github.com/cakephp/chronos) if you can. (https://github.com/cakephp/chronos)
 
 <3 Chronos, Immutability FTW ᕙ(⇀‸↼‶)ᕗ
