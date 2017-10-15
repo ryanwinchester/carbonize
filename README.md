@@ -63,7 +63,7 @@ MIT
 
 ## Notes
 
-Although Carbon is decent, use [Chronos](https://github.com/cakephp/chronos) if you can.
-https://github.com/cakephp/chronos
+- Please use Carbon 1.21 (not 1.22) until timezones are fixed. (https://github.com/briannesbitt/Carbon/issues/863)
+- Although Carbon is decent, use [Chronos](https://github.com/cakephp/chronos) if you can. (https://github.com/cakephp/chronos)
 
-Immutability FTW ᕙ(⇀‸↼‶)ᕗ
+<3 Chronos, Immutability FTW ᕙ(⇀‸↼‶)ᕗ

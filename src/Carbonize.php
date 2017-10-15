@@ -10,6 +10,9 @@ use InvalidArgumentException;
 class Carbonize
 {
     /**
+     * Convert some sort of datetime object, string, or timestamp into a new
+     * instance of Carbon.
+     *
      * @param mixed $datetime
      * @param DateTimeZone|string|null $timezone
      * @return Carbon
