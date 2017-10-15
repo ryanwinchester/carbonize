@@ -34,9 +34,7 @@ class Carbonize
             case $carbonize->isDatetimeString($datetime):
                 return $carbonize->fromDatetimeString($datetime, $timezone);
             default:
-                throw new InvalidArgumentException(
-                    "That is not a date time of any sort that I can deal with"
-                );
+                throw new InvalidArgumentException("Can't carbonize this");
         }
     }
 
