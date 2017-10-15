@@ -22,6 +22,7 @@ Is this going to be a timestamp? a date string? a Carbon instance? Does it even 
     }
 ```
 
+You can use it as either `carbonize()`, `carbon()`, or `Carbonize\Carbonize::toCarbon()`.
 
 ## Install
 
