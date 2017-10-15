@@ -18,6 +18,7 @@
         "codeclimate/php-test-reporter": "^0.4.4"
     },
     "autoload": {
+      "psr-4": {"Carbonize\\": "src/"},
         "files": ["src/functions.php"]
     },
     "autoload-dev": {
