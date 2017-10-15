@@ -26,10 +26,6 @@ You can use it as either `carbonize()`, `carbon()`, or `Carbonize\Carbonize::toC
 
 ## Install
 
-It's probably best to just copy the code and modify it to suit your needs than to add a dependency (if you do have some good improvements, please share).
-
-However, you can also just install it with composer:
-
 ```
 composer require ryanwinchester/carbonize
 ```

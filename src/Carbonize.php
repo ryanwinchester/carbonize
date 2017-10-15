@@ -119,7 +119,7 @@ class Carbonize
      * @param DateTimeZone|string|null $timezone
      * @return Carbon
      */
-    public function fromDatetimeString($datetime, $timezone)
+    public function fromDatetimeString(string $datetime, $timezone)
     {
         return $this->withTimezone(
             new Carbon($datetime, $timezone),
