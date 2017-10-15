@@ -17,10 +17,7 @@ if (! function_exists('carbonize')) {
             case $datetime instanceof Carbon:
                 $dt = clone $datetime;
                 return is_null($tz) ? $dt : $dt->setTimezone($tz);
-            case $datetime instanceof DateTime:
-                $dt = Carbon::instance($datetime);
-                return is_null($tz) ? $dt : $dt->setTimezone($tz);
-            case $datetime instanceof DateTimeImmutable:
+            case $datetime instanceof DateTimeInterface:
                 $dt = new Carbon($datetime->format('Y-m-d H:i:s.u'), $datetime->getTimezone());
                 return is_null($tz) ? $dt : $dt->setTimezone($tz);
             case is_numeric($datetime) && (string) (int) $datetime === (string) $datetime:
