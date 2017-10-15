@@ -21,7 +21,7 @@ if (! function_exists('carbonize')) {
                 $dt = Carbon::instance($datetime);
                 return is_null($tz) ? $dt : $dt->setTimezone($tz);
             case $datetime instanceof DateTimeImmutable:
-                $dt = Carbon::instance(new DateTime($datetime->format(DateTime::ATOM)));
+                $dt = new Carbon($datetime->format('Y-m-d H:i:s.u'), $datetime->getTimezone());
                 return is_null($tz) ? $dt : $dt->setTimezone($tz);
             case is_numeric($datetime) && (string) (int) $datetime === (string) $datetime:
                 return Carbon::createFromTimestamp((int) $datetime, $tz);
