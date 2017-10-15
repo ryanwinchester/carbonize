@@ -19,7 +19,7 @@
     },
     "autoload": {
       "psr-4": {"Carbonize\\": "src/"},
-        "files": ["src/functions.php"]
+        "files": ["src/helpers.php"]
     },
     "autoload-dev": {
         "psr-4": {"Carbonize\\Tests\\": "tests/"}
